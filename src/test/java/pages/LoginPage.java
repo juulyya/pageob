@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import data.DataHelper;
 
 import static com.codeborne.selenide.Selenide.$;
+
 public class LoginPage {
 
     private SelenideElement loginField = $("[data-test-id=login] input");
