@@ -26,7 +26,7 @@ class MoneyTransferTest {
 
 
     @Test
-    void shouldTransferMoneyBetweenOwnCards() {
+    void shouldTransferMoneyBetweenOwnCardsFromFirstToSecond() {
         var firstCard = DataHelper.getFirstCard();
         var secondCard = DataHelper.getSecondCard();
         var firstCardBalance = dashboardPage.getCardBalance(firstCard);
@@ -35,13 +35,44 @@ class MoneyTransferTest {
         var transferPage = dashboardPage.deposit2();
         var expectedFirstCardBalance = firstCardBalance - amount;
         var expectedSecondCardBalance = secondCardBalance + amount;
-        //var transferPage = dashboardPage.selectCardToTransfer(secondCard);
         transferPage.makeTransfer(String.valueOf(amount), String.valueOf(firstCard));
         var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCard);
         var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCard);
         assertEquals(expectedFirstCardBalance, actualBalanceFirstCard);
         assertEquals(expectedSecondCardBalance, actualBalanceSecondCard);
+    }
 
+    @Test
+    void shouldTransferMoneyBetweenOwnCardsFromSecondToFirst() {
+        var firstCard = DataHelper.getFirstCard();
+        var secondCard = DataHelper.getSecondCard();
+        var firstCardBalance = dashboardPage.getCardBalance(firstCard);
+        var secondCardBalance = dashboardPage.getCardBalance(secondCard);
+        var amount = DataHelper.transferValidAmount(secondCardBalance);
+        var transferPage = dashboardPage.deposit1();
+        var expectedFirstCardBalance = firstCardBalance + amount;
+        var expectedSecondCardBalance = secondCardBalance - amount;
+        transferPage.makeTransfer(String.valueOf(amount), String.valueOf(secondCard));
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCard);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCard);
+        assertEquals(expectedFirstCardBalance, actualBalanceFirstCard);
+        assertEquals(expectedSecondCardBalance, actualBalanceSecondCard);
+    }
 
+    @Test
+    void shouldTransferMoneyBetweenOwnOverBalance() {
+        var firstCard = DataHelper.getFirstCard();
+        var secondCard = DataHelper.getSecondCard();
+        var firstCardBalance = dashboardPage.getCardBalance(firstCard);
+        var secondCardBalance = dashboardPage.getCardBalance(secondCard);
+        var amount = 15000;
+        var transferPage = dashboardPage.deposit1();
+        var expectedFirstCardBalance = firstCardBalance + amount;
+        var expectedSecondCardBalance = secondCardBalance - amount;
+        transferPage.makeTransfer(String.valueOf(amount), String.valueOf(secondCard));
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCard);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCard);
+        assertEquals(expectedFirstCardBalance, actualBalanceFirstCard);
+        assertEquals(expectedSecondCardBalance, actualBalanceSecondCard);
     }
 }
