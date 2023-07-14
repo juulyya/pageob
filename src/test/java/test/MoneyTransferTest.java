@@ -65,7 +65,7 @@ class MoneyTransferTest {
         var secondCard = DataHelper.getSecondCard();
         var firstCardBalance = dashboardPage.getCardBalance(firstCard);
         var secondCardBalance = dashboardPage.getCardBalance(secondCard);
-        var amount = 15000;
+        var amount = secondCardBalance + 1000; //Переводим на 1 карту сумму большую чем остаток на второй на 1000
         var transferPage = dashboardPage.deposit1();
         var expectedFirstCardBalance = firstCardBalance + amount;
         var expectedSecondCardBalance = secondCardBalance - amount;
